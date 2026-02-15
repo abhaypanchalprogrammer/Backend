@@ -28,6 +28,12 @@ app.patch("/student/:index", (req, res) => {
     message: "Data is Edited into Student API",
   });
 });
+app.put("/student/:index", (req, res) => {
+  student[req.params.index] = req.body;
+  res.status(200).json({
+    message: "Student data is updated",
+  });
+});
 app.get("/student", (req, res) => {
   res.send(student);
 });
