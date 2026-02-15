@@ -6,41 +6,30 @@ server ko config krna
 
 const express = require("express");
 const app = express();
-const student = [];
 app.use(express.json());
+const student = [];
 
-//Create a data
 app.post("/student", (req, res) => {
   console.log(req.body);
-  res.status(201).json({
-    message: "note created successfully",
-  });
   student.push(req.body);
+  res.status(201).json({
+    message: "Data Added in student API",
+  });
 });
-
-//Delete Data
 app.delete("/student/:index", (req, res) => {
   delete student[req.params.index];
   res.status(200).json({
-    message: "note deleted",
+    message: "Data Deleted From Student API",
   });
 });
-
-//Update Data
 app.patch("/student/:index", (req, res) => {
   student[req.params.index].college = req.body.college;
   res.status(200).json({
-    message: "note updated",
+    message: "Data is Edited into Student API",
   });
 });
-
-//Retireve Data
-app.get("/student", (req, res) => {
-  res.send(student);
-});
-
 app.get("/", (req, res) => {
-  res.send("this is home page");
+  res.send("this is the first page of this server");
 });
 
 module.exports = app;
