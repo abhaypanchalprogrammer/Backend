@@ -17,7 +17,7 @@ app.post("/student", (req, res) => {
   });
 });
 app.delete("/student/:index", (req, res) => {
-  delete student[req.params.index];
+  student.splice(req.params.index, 1);
   res.status(200).json({
     message: "Data Deleted From Student API",
   });
@@ -27,6 +27,9 @@ app.patch("/student/:index", (req, res) => {
   res.status(200).json({
     message: "Data is Edited into Student API",
   });
+});
+app.get("/student", (req, res) => {
+  res.send(student);
 });
 app.get("/", (req, res) => {
   res.send("this is the first page of this server");
