@@ -7,8 +7,7 @@
 
 // const connectToDb = () => {
 //   mongoose
-//     .connect(
-//       "mongodb+srv://abhaypanchal2525_db_user:a1b2h3a4y5@cluster1.iyzf98x.mongodb.net/day-5",
+//     .connect(uri),
 //     )
 //     .then(() => {
 //       console.log("Connected to Database");

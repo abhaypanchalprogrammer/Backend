@@ -14,8 +14,14 @@ app.post("/notes", async (req, res) => {
     note,
   });
 });
-
-app.get("/", (req, res) => {
+app.get("/notes", async (req, res) => {
+  const notes = await noteModel.find();
+  res.status(200).json({
+    message: "notes fetched",
+    notes,
+  });
+});
+app.get("/", async (req, res) => {
   res.send("hello world");
 });
 
