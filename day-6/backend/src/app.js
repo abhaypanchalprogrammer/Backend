@@ -4,17 +4,17 @@ const cors = require("cors");
 const noteModel = require("./models/notes.model");
 app.use(express.json());
 app.use(cors());
-
+const path = require("path");
 app.post("/notes", async (req, res) => {
   const { title, description } = req.body;
 
-  const notes = await newModel.create({
+  const notes = await noteModel.create({
     title,
     description,
   });
   res.status(201).json({
     message: "Data added successfully",
-    notes,
+    note: notes,
   });
 });
 
@@ -23,7 +23,7 @@ app.get("/notes", async (req, res) => {
 
   res.status(200).json({
     message: "Data Retieved successfully",
-    note,
+    note: note,
   });
 });
 
@@ -45,4 +45,18 @@ app.patch("/notes/:id", async (req, res) => {
   });
 });
 
+app.put("/notes/:id", async (req, res) => {
+  const id = req.params.id;
+  const updateNote = await noteModel.findByIdAndUpdate(id, req.body, {
+    new: true,
+  });
+  res.status(200).json({
+    message: "Data updated",
+    note: updateNote,
+  });
+});
+
+app.use("*name", (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "/public/index.html"));
+});
 module.exports = app;

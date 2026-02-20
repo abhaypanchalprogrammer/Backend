@@ -1,4 +1,0 @@
-Cluster :-
-- Cluster is a combination of storage and precessor
-- We will use mongoDB Atlas cloud 
-- We can Add lots of Database in 1 cluster

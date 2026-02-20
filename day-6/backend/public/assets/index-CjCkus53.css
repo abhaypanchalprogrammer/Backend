@@ -3,14 +3,12 @@
   padding: 0;
   box-sizing: border-box;
 }
-
 html,
 body,
 #root {
   height: 100%;
   width: 100%;
 }
-
 html {
   background-color: #212121;
   font-family: system-ui;
@@ -27,9 +25,8 @@ html {
   border-radius: 0.75rem;
   max-width: 30rem;
   width: 30rem;
-  color: white;
+  color: #fff;
 }
-
 .note-create-form,
 .note-update-form {
   display: flex;
