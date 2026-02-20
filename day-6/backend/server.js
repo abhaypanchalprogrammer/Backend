@@ -4,6 +4,6 @@ const app = require("./src/app");
 const connectToDb = require("./src/config/database");
 
 connectToDb();
-app.listen(5001, () => {
+app.listen(process.env.PORT, () => {
   console.log("this server is running on port 5001");
 });
