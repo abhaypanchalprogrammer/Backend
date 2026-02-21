@@ -330,16 +330,7 @@ Example:
 
 7️⃣ What jwt.sign() Returns
 `const token = jwt.sign(...)`
-
 Returns a string
-
-This string is the JWT
-
-Example:
-
-```
-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5OTljZWE5YTIxNTE4YThjY2NiOGFlOCIsImVtYWlsIjoiYWJjQGdtYWlsLmNvbSIsImlhdCI6MTc3MTY4NzU5M30.signature
-```
 
 8️⃣ What is Inside the Token?
 
