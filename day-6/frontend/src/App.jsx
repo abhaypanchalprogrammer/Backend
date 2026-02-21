@@ -80,7 +80,7 @@ const App = () => {
             setUpdateNote({ ...updateNote, description: e.target.value })
           }
         />
-        <button></button>
+        <button>Update Note</button>
       </form>
 
       <div className="notes">
