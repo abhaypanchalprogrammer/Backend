@@ -80,13 +80,13 @@ const App = () => {
             setUpdateNote({ ...updateNote, description: e.target.value })
           }
         />
-        <button>Create Note</button>
+        <button></button>
       </form>
 
       <div className="notes">
-        {notes.map((note, index) => {
+        {notes.map((note) => {
           return (
-            <div className="note" key={index}>
+            <div className="note" key={note._id}>
               <h1>{note.title}</h1>
               <p>{note.description}</p>
               <button onClick={() => handleEdit(note)}>Update</button>
