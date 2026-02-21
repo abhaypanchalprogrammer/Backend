@@ -9,7 +9,7 @@ const App = () => {
     description: "",
   });
   useEffect(() => {
-    axios.get("https://backend-1-et73.onrender.com/").then((res) => {
+    axios.get("https://backend-1-et73.onrender.com/notes").then((res) => {
       console.log(res.data);
       setNotes(res.data.note || []);
     });
@@ -22,7 +22,7 @@ const App = () => {
     console.log(title.value, description.value);
 
     axios
-      .post("https://backend-1-et73.onrender.com/", {
+      .post("https://backend-1-et73.onrender.com/notes", {
         title: title.value,
         description: description.value,
       })
@@ -38,7 +38,7 @@ const App = () => {
   function handleUpdate(e) {
     e.preventDefault();
     axios
-      .put(`https://backend-1-et73.onrender.com/${editingID}`, updateNote)
+      .put(`https://backend-1-et73.onrender.com/notes/${editingID}`, updateNote)
       .then((res) => {
         console.log(res.data);
         setNotes((prev) =>
@@ -49,9 +49,11 @@ const App = () => {
   }
 
   const handleDelete = (noteId) => {
-    axios.delete(`https://backend-1-et73.onrender.com/${noteId}`).then(() => {
-      setNotes((prev) => prev.filter((note) => note._id !== noteId));
-    });
+    axios
+      .delete(`https://backend-1-et73.onrender.com/notes/${noteId}`)
+      .then(() => {
+        setNotes((prev) => prev.filter((note) => note._id !== noteId));
+      });
   };
 
   return (
