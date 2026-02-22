@@ -28,6 +28,8 @@ authRouter.post("/register", async (req, res) => {
     },
     process.env.JWT_SECRET,
   );
+  res.cookie("jwt_token", token);
+
   res.status(201).json({
     message: "user registered successfully",
     user,

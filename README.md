@@ -366,3 +366,81 @@ Token proves identity, not permissions
 
 🧠 One-Line Summary
 JWT token is created using jwt.sign(payload, secret) and is used to identify users in a stateless way.
+
+6. Cookies in Express (Notes)
+
+1️⃣ What is a Cookie?
+A cookie is small data stored in the browser and sent automatically with every request to the server.
+
+In your app:
+Cookie stores JWT token
+Browser manages it automatically
+
+2️⃣ Why Cookies Are Used?
+Cookies help to:
+Maintain user session
+Send data automatically with requests
+Avoid manually attaching data in headers
+
+3️⃣ Installing cookie-parser
+`npm install cookie-parser`
+4️⃣ Importing cookie-parser
+`import cookieParser from "cookie-parser";`
+5️⃣ Using cookie-parser Middleware
+`app.use(cookieParser());`
+
+Why this is required:
+Parses cookies from request headers
+Makes cookies available in req.cookies
+Without it:
+`req.cookies ❌ undefined`
+With it:
+`req.cookies ✅ works`
+
+6️⃣ Setting a Cookie (Your Code)
+`res.cookie("jwt_token", token);`
+
+What happens:
+Server sends cookie to browser
+Browser stores cookie
+Cookie name → jwt_token
+Cookie value → JWT token
+
+7️⃣ How Browser Sends Cookie Back
+Automatically with every request:
+Cookie: jwt_token=TOKEN
+You do NOT need to send it manually.
+
+8️⃣ Reading Cookie in Server (Later Use)
+`const token = req.cookies.jwt_token;`
+
+This works because:
+`app.use(cookieParser());`
+9️⃣ Cookie Name Matters
+`"jwt_token"`
+Must be same when setting & reading
+Wrong name → undefined value
+
+10️⃣ Clearing Cookie (Logout)
+`res.clearCookie("jwt_token");`
+This removes the cookie from browser.
+
+11️⃣ Cookie Options (Basic)
+
+```javascript
+res.cookie("jwt_token", token, {
+  httpOnly: true,
+});
+```
+
+httpOnly → JS cannot access cookie
+Improves security
+
+⚠️ Important Notes
+Cookies are sent automatically
+cookie-parser only reads cookies
+Cookies can store strings only
+Cookies persist until cleared or expired
+
+🧠 One-Line Summary
+Cookies store data in the browser and are automatically sent with every request; cookie-parser allows Express to read them.

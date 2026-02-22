@@ -1,4 +1,5 @@
 import app from "./src/app.js";
+
 import dotenv from "dotenv";
 dotenv.config();
 import connecteToDb from "./src/config/database.js";
