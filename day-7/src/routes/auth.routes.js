@@ -1,25 +1,25 @@
 import express from "express";
 import userModel from "../model/user.model.js";
 import jwt from "jsonwebtoken";
-const { jsonwebtoken } = jwt;
+import crypto from "crypto";
 
 const authRouter = express.Router();
-
 authRouter.post("/register", async (req, res) => {
   const { name, email, password } = req.body;
 
   const isUserExist = await userModel.findOne({ email });
 
   if (isUserExist) {
-    return res.status(400).json({
-      message: "this user is already exists",
+    return res.status(409).json({
+      message: "User is already exists with this email address",
     });
   }
+  const hash = crypto.createHash("md5").update(password).digest("hex");
 
   const user = await userModel.create({
     name,
     email,
-    password,
+    password: hash,
   });
   const token = jwt.sign(
     {
@@ -37,4 +37,38 @@ authRouter.post("/register", async (req, res) => {
   });
 });
 
+authRouter.post("/protected", async (req, res) => {
+  console.log(req.cookies);
+  res.status(201).json({
+    message: "this route is protected",
+  });
+});
+// controller
+authRouter.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+  const user = await userModel.findOne({ email });
+  if (!user) {
+    return res.status(404).json({
+      message: "user does not exist with this email address",
+    });
+  }
+
+  const isPasswordCorrect =
+    user.password === crypto.createHash("md5").update(password).digest("hex");
+  if (!isPasswordCorrect) {
+    return res.status(401).json({
+      message: "password is incorrect",
+    });
+  }
+  const token = jwt.sign(
+    {
+      id: user._id,
+    },
+    process.env.JWT_SECRET,
+  );
+  res.cookie("jwt_token", token);
+  res.status(200).json({
+    message: "login successtful",
+  });
+});
 export default authRouter;
