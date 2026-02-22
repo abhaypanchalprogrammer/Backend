@@ -1,0 +1,29 @@
+Authentication :-
+-- register
+-- Login
+-- Logot (token blacklisting)
+-- [otp based registration]
+
+Post :-
+-- Create Post
+-- Visible Feed
+-- Can like (collection types) , Save
+
+User :-
+-- Can Followers and Following
+
+
+
+user = {
+    username : String,
+    email:String,
+    password:String,
+    bio:String,
+    followers:Array,
+    profile_image:String
+}
+
+api:{
+    register :- save data, token generate krna 
+    login :- data verify krna 
+}

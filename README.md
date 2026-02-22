@@ -474,28 +474,47 @@ return res.status(404).json({
 📌 Why 404?
 Because the email is not registered.
 
-3️⃣ Hash Entered Password
-Since password was stored as MD5 hash during register:
-`const hashPassword = crypto.createHash("md5").update(password).digest("hex")`
-Steps happening internally:
-createHash("md5") → selects MD5 algorithm
-update(password) → adds user-entered password
-digest("hex") → converts hash into hexadecimal string
+1️⃣ What is bcrypt?
+A password hashing library
+Automatically adds salt
+Slow by design → protects against brute-force attacks
+Industry standard for password security
 
-Example:
+2️⃣ Install
+`npm install bcrypt`
 
-const hashedPassword = crypto
-.createHash("md5")
-.update(password)
-.digest("hex");
-4️⃣ Compare Password
-user.password === hashedPassword
+3️⃣ Import
+`import bcrypt from "bcrypt";`
+
+4️⃣ Hash Password (During Register)
+`const hash = await bcrypt.hash(password, 10);`
+Explanation:
+password → plain text password
+10 → salt rounds
+Returns → hashed password
+
+5️⃣ What is Salt Rounds?
+`bcrypt.hash(password, 10)`;
+10 = cost factor
+Higher number → more secure but slower
+Recommended: 10–12
+
+6️⃣ Compare Password (During Login)
+`const isValid = await bcrypt.compare(password, user.password);`
+Explanation:
+First argument → plain password from user
+Second argument → hashed password from DB
+Returns → true or false
+
+⚠️ Never hash again during login.
 
 If not matching:
 
+```javascript
 return res.status(401).json({
-message: "password is incorrect",
+  message: "password is incorrect",
 });
+```
 
 📌 Why 401?
 Because credentials are wrong.
@@ -526,19 +545,3 @@ res.status(200).json({
   message: "login successtful",
 });
 ```
-
-🔐 CRYPTO HASHING NOTES (MD5)
-📌 What is crypto?
-crypto is a built-in Node.js module used for:
-Hashing
-Encryption
-Random token generation
-Digital signatures
-You are using it for hashing passwords.
-
-🧠 What is MD5?
-MD5 is a hashing algorithm that:
-Produces 32-character hexadecimal string
-Is very fast
-Is NOT secure for password storage
-Is vulnerable to rainbow table attacks
