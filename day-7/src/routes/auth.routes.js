@@ -27,6 +27,7 @@ authRouter.post("/register", async (req, res) => {
       email: user.email,
     },
     process.env.JWT_SECRET,
+    { expiresIn: "1h" },
   );
   res.cookie("jwt_token", token);
 
@@ -72,9 +73,9 @@ authRouter.post("/protected", async (req, res) => {
 //   });
 // });
 
-authRouter.post("/login", (req, res) => {
+authRouter.post("/login", async (req, res) => {
   const { email, password } = req.body;
-  const user = userModel.findOne({ email });
+  const user = await userModel.findOne({ email });
   if (!user) {
     return res.status(409).json({
       message: "user with this email already exists",
@@ -98,6 +99,17 @@ authRouter.post("/login", (req, res) => {
     message: "Login successful",
     user,
     token,
+  });
+});
+
+authRouter.get("/getme", async (req, res) => {
+  const token = req.cookies.jwt_token;
+  const decoded = jwt.verify(token, process.env.JWT_SECRET);
+  const user = await userModel.findById(decoded.id);
+  console.log(decoded);
+  res.json({
+    name: user.name,
+    email: user.email,
   });
 });
 export default authRouter;
