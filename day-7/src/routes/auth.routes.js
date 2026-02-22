@@ -2,7 +2,6 @@ import express from "express";
 import userModel from "../model/user.model.js";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
-import { error } from "console";
 
 const authRouter = express.Router();
 authRouter.post("/register", async (req, res) => {
