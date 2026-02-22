@@ -444,3 +444,101 @@ Cookies persist until cleared or expired
 
 🧠 One-Line Summary
 Cookies store data in the browser and are automatically sent with every request; cookie-parser allows Express to read them.
+
+🔐 LOGIN API NOTES (Using crypto - MD5)
+
+📌 Purpose
+The Login API is used to:
+Verify if user exists
+Verify if password is correct
+Generate JWT token
+Send token in cookies
+Allow authenticated access
+
+🧠 Step-by-Step Login Flow
+1️⃣ Get Data from Request
+`const { email, password } = req.body;`
+We extract user credentials from request body.
+
+2️⃣ Check If User Exists
+`const user = await userModel.findOne({ email });`
+
+If no user found:
+
+```javascript
+return res.status(404).json({
+  message: "user does not exist with this email address",
+});
+```
+
+📌 Why 404?
+Because the email is not registered.
+
+3️⃣ Hash Entered Password
+Since password was stored as MD5 hash during register:
+`const hashPassword = crypto.createHash("md5").update(password).digest("hex")`
+Steps happening internally:
+createHash("md5") → selects MD5 algorithm
+update(password) → adds user-entered password
+digest("hex") → converts hash into hexadecimal string
+
+Example:
+
+const hashedPassword = crypto
+.createHash("md5")
+.update(password)
+.digest("hex");
+4️⃣ Compare Password
+user.password === hashedPassword
+
+If not matching:
+
+return res.status(401).json({
+message: "password is incorrect",
+});
+
+📌 Why 401?
+Because credentials are wrong.
+
+5️⃣ Generate JWT Token
+
+```javascript
+const token = jwt.sign(
+  {
+    id: user._id,
+  },
+  process.env.JWT_SECRET,
+);
+```
+
+JWT contains:
+User ID
+Secret key for verification
+
+6️⃣ Send Token in Cookie
+`res.cookie("jwt_token", token);`
+Now user is authenticated.
+
+7️⃣ Send Success Response
+
+```javascript
+res.status(200).json({
+  message: "login successtful",
+});
+```
+
+🔐 CRYPTO HASHING NOTES (MD5)
+📌 What is crypto?
+crypto is a built-in Node.js module used for:
+Hashing
+Encryption
+Random token generation
+Digital signatures
+You are using it for hashing passwords.
+
+🧠 What is MD5?
+MD5 is a hashing algorithm that:
+Produces 32-character hexadecimal string
+Is very fast
+Is NOT secure for password storage
+Is vulnerable to rainbow table attacks
