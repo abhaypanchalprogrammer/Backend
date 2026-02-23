@@ -27,3 +27,10 @@ api:{
     register :- save data, token generate krna 
     login :- data verify krna 
 }
+
+post :{
+    caption:String,
+    img_utl:String,
+    user:userId,
+    createdAt : Date,
+}

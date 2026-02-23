@@ -13,7 +13,11 @@ import bcrypt from "bcrypt";
 export const registerUser = async (req, res) => {
   try {
     const { username, email, password, bio, profileImage } = req.body;
-
+    if (!password || password.length < 6) {
+      return res.status(400).json({
+        message: "Please give you password",
+      });
+    }
     const isUserAlreadyExists = await userModel.findOne({
       $or: [{ username }, { email }],
     });
@@ -61,6 +65,11 @@ export const registerUser = async (req, res) => {
 export const loginUser = async (req, res) => {
   try {
     const { username, email, password } = req.body;
+    if (!password) {
+      return res.status(400).json({
+        message: "Please give you password",
+      });
+    }
     const user = await userModel.findOne({
       $or: [{ username: username }, { email: email }],
     });
