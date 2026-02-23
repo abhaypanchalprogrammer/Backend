@@ -445,7 +445,7 @@ Cookies persist until cleared or expired
 🧠 One-Line Summary
 Cookies store data in the browser and are automatically sent with every request; cookie-parser allows Express to read them.
 
-🔐 LOGIN API NOTES (Using crypto - MD5)
+7. LOGIN API NOTES (Using crypto - MD5)
 
 📌 Purpose
 The Login API is used to:
@@ -545,3 +545,218 @@ res.status(200).json({
   message: "login successtful",
 });
 ```
+
+8. Notes for createPostController
+   1️⃣ Imports
+
+```javascript
+import postModel from "../models/post.model.js";
+import ImageKit, { toFile } from "@imagekit/nodejs";
+```
+
+✔ postModel
+Mongoose model for storing posts in MongoDB.
+
+✔ ImageKit
+SDK from ImageKit used to upload images to cloud storage.
+
+✔ toFile
+Converts buffer into file object format required by ImageKit upload API.
+
+2️⃣ ImageKit Client Initialization
+
+```javascript
+const client = new ImageKit({
+  privateKey: process.env.IMAGEKIT_PRIVATE_KEY,
+});
+```
+
+✔ Why?
+Uses private key from .env
+Authenticates server with ImageKit
+Must be kept secret (never expose in frontend)
+
+3️⃣ Controller Function
+`export const createPostController = async (req, res) => {`
+✔ Async function
+Because:
+Image upload is async
+Database operation is async
+
+4️⃣ Extract Caption
+`const { caption } = req.body;`
+Gets caption from request body.
+Optional in social media apps.
+
+5️⃣ File Validation
+`if (!req.file)`
+✔ Why?
+Ensures image was uploaded (via multer).
+Prevents server crash if no file provided.
+
+6️⃣ Upload Image to ImageKit
+
+```javascript
+const file = await client.files.upload({
+  file: await toFile(req.file.buffer, req.file.originalname),
+  fileName: req.file.originalname,
+  folder: "/posts",
+});
+```
+
+✔ What Happens Here?
+`req.file.buffer` → raw image data
+`toFile()` → converts buffer into uploadable file
+`fileName` → image name in cloud
+`folder: "/posts"`→ organizes uploads
+
+✔ Returns:
+`file.url`
+`file.fileId`
+
+7️⃣ Save Post in MongoDB
+
+```javascript
+const newPost = await postModel.create({
+  caption,
+  imgUrl: file.url,
+});
+```
+
+✔ What is stored?
+Caption (text)
+Image URL from ImageKit
+
+8️⃣ Send Response
+`res.status(200).json(newPost);`
+Sends created post to frontend.
+Better practice: use 201 (Created).
+
+9️⃣ Error Handling
+`catch (err)`
+Logs error in console
+Sends generic failure message
+Prevents server crash
+
+🔥 Flow Summary
+User uploads image
+Multer stores file in memory
+Image uploaded to ImageKit
+Image URL saved in MongoDB
+Post returned to frontend
+
+9. Notes – Post Router with Multer (Image Upload)
+   1️⃣ Importing Required Modules
+   `import express from "express";`
+   Imports Express framework
+   Used to create routes and handle HTTP requests
+
+`import { createPostController } from "../controller/post.controller.js";`
+Imports the controller function
+This function contains the business logic for creating a post
+Separation of concerns → Route handles request, controller handles logic
+
+`import multer from "multer";`
+Imports Multer middleware
+Multer is used for handling multipart/form-data
+Mainly used for file uploads (images, videos, etc.)
+
+2️⃣ Creating Router
+`const postRouter = express.Router();`
+Creates a new router instance
+Helps organize routes separately (Modular Routing)
+Later mounted in main app like:
+
+`app.use("/api/posts", postRouter);`
+3️⃣ Configuring Multer Storage
+`const upload = multer({ storage: multer.memoryStorage() });`
+🔹 What is `memoryStorage()`?
+Stores uploaded file in RAM (memory)
+File is available inside:
+req.file
+Does NOT save file directly to disk
+
+Useful when:
+Uploading to Cloudinary
+Sending to AWS S3
+Processing image before saving
+
+4️⃣ Creating POST Route
+`postRouter.post("/", upload.single("image"), createPostController);`
+🔥 Breakdown:
+
+-> " / "
+Endpoint for creating a new post
+
+-> `upload.single("image")`
+Middleware from Multer
+Accepts one file only
+"image" must match the name attribute in frontend form
+
+Example frontend:
+<input type="file" name="image" />
+
+After upload:
+File available at → req.file
+Text fields available at → req.body
+
+3. createPostController
+   Runs after multer middleware
+
+Handles:
+Saving post data
+Uploading image to cloud (if implemented)
+Storing image URL in database
+
+📦 Flow of Request
+Client sends POST request with:
+Image
+Text fields (caption, title, etc.)
+
+Multer:
+Extracts image
+Stores in memory
+
+Controller:
+Gets file from req.file
+Gets other data from req.body
+Saves post to database
+
+-> important concepts
+
+| Concept         | Explanation                          |
+| --------------- | ------------------------------------ |
+| Express Router  | Modular route handling               |
+| Middleware      | Function that runs before controller |
+| Multer          | File upload middleware               |
+| memoryStorage   | Stores file temporarily in RAM       |
+| single("image") | Accepts single file                  |
+
+`Common HTTP Status codes`
+1xx — Informational
+100 — Continue
+101 — Switching Protocols
+102 — Processing
+
+2xx — Success
+200 — OK (request succeeded)
+201 — Created (resource created successfully)
+204 — No Content (success but no response body)
+
+3xx — Redirection
+301 — Moved Permanently
+302 — Found (temporary redirect)
+304 — Not Modified
+
+4xx — Client Errors400 — Bad Request
+401 — Unauthorized (authentication required)
+403 — Forbidden (no permission)
+404 — Not Found
+409 — Conflict
+422 — Unprocessable Entity (validation error)
+
+5xx — Server Errors
+500 — Internal Server Error
+502 — Bad Gateway
+503 — Service Unavailable
+504 — Gateway Timeout
