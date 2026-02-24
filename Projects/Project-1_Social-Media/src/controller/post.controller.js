@@ -1,12 +1,13 @@
 import postModel from "../models/post.model.js";
 import ImageKit, { toFile } from "@imagekit/nodejs";
-import jwt from "jsonwebtoken";
+
 const client = new ImageKit({
   privateKey: process.env.IMAGEKIT_PRIVATE_KEY,
 });
 
 export const createPostController = async (req, res) => {
   try {
+    const { caption } = req.body;
     if (!req.file) {
       return res.status(400).json({
         message: "please upload an image to create post",
@@ -20,7 +21,7 @@ export const createPostController = async (req, res) => {
     const newPost = await postModel.create({
       caption,
       imgUrl: file.url,
-      user: decoded.id,
+      user: req.user.id,
     });
     res.status(201).json({
       message: "Post Created Successfully",
@@ -35,7 +36,7 @@ export const createPostController = async (req, res) => {
 
 export const getPostController = async (req, res) => {
   try {
-    const userId = decoded.id;
+    const userId = req.user.id;
 
     const post = await postModel.find({
       user: userId,
@@ -53,7 +54,7 @@ export const getPostController = async (req, res) => {
 
 export const getPostDetails = async (req, res) => {
   try {
-    const userId = decoded.id;
+    const userId = req.user.id;
     const postId = req.params.postId;
 
     const post = await postModel.findById(postId);

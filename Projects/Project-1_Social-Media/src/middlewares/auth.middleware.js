@@ -1,17 +1,20 @@
 import jwt from "jsonwebtoken";
 export const identifyUser = async (req, res, next) => {
-  const token = req.cookies.token;
-  if (!token) {
-    return res.status(401).json({
-      message: "Unauthorized Access",
-    });
-  }
-  let decoded;
   try {
-    decoded = jwt.verify(token, process.env.JWT_SECRET);
-  } catch (err) {
+    const token = req.cookies.token;
+    if (!token) {
+      return res.status(401).json({
+        message: "Unauthorized Access",
+      });
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    req.user = decoded;
+    next();
+  } catch (error) {
     return res.status(401).json({
-      message: "Invalid Token",
+      message: "Invalid or Expired Token",
     });
   }
 };
