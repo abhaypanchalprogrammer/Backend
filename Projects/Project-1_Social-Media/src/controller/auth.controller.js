@@ -1,6 +1,7 @@
 import userModel from "../models/user.model.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import followModel from "../models/follow.model.js";
 
 /**
  * get user's data using req.body
@@ -12,10 +13,15 @@ import bcrypt from "bcrypt";
  */
 export const registerUser = async (req, res) => {
   try {
-    const { username, email, password, bio, profileImage } = req.body;
+    const { username, name, email, password, bio, profileImage } = req.body;
     if (!password || password.length < 6) {
       return res.status(400).json({
         message: "Please give you password",
+      });
+    }
+    if (username.includes(" ")) {
+      return res.status(400).json({
+        message: "Username cant contain spaces",
       });
     }
     const isUserAlreadyExists = await userModel.findOne({
@@ -32,6 +38,7 @@ export const registerUser = async (req, res) => {
     const hash = await bcrypt.hash(password, 10);
     const user = await userModel.create({
       username,
+      name,
       email,
       password: hash,
       bio,
@@ -50,8 +57,9 @@ export const registerUser = async (req, res) => {
     res.status(201).json({
       message: "User Registerd Successfully",
       user: {
-        email: user.email,
         username: user.username,
+        email: user.email,
+        name: user.name,
         bio: user.bio,
         profileImage: user.profileImage,
       },
@@ -69,6 +77,11 @@ export const loginUser = async (req, res) => {
     if (!password) {
       return res.status(400).json({
         message: "Please give you password",
+      });
+    }
+    if (username.includes(" ")) {
+      return res.status(400).json({
+        message: "Username cant contain spaces",
       });
     }
     const user = await userModel.findOne({

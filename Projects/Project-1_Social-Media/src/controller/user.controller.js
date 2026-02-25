@@ -5,11 +5,6 @@ export const followUserController = async (req, res) => {
   try {
     const followerUsername = req.user.username;
     const followeeUserName = req.params.username;
-    if (followeeUserName === followerUsername) {
-      return res.status(404).json({
-        message: "You cant follow your self",
-      });
-    }
     const isUserExist = await userModel.findOne({
       username: followeeUserName,
     });
@@ -18,13 +13,20 @@ export const followUserController = async (req, res) => {
         message: `${followeeUserName} is not exists`,
       });
     }
+    if (followeeUserName === followerUsername) {
+      return res.status(404).json({
+        message: "You cant follow yourself",
+      });
+    }
+
     const isAlreadyFollowed = await followModel.findOne({
       follower: followerUsername,
       followee: followeeUserName,
     });
     if (isAlreadyFollowed) {
-      return res.status(403).json({
-        message: "already followed",
+      return res.status(200).json({
+        message: "Already followed",
+        isAlreadyFollowed,
       });
     }
     const followRequst = await followModel.create({
@@ -39,5 +41,78 @@ export const followUserController = async (req, res) => {
     res
       .status(500)
       .json({ message: "Internal server error", error: error.message });
+  }
+};
+
+export const unfollowController = async (req, res) => {
+  try {
+    const followerUsername = req.user.username;
+    const followeeUserName = req.params.username;
+
+    const isUserFollowing = await followModel.findOne({
+      follower: followerUsername,
+      followee: followeeUserName,
+    });
+
+    if (!isUserFollowing) {
+      return res.status(200).json({
+        message: `You are not following ${followerUsername}`,
+      });
+    }
+    await followModel.findByIdAndDelete(isUserFollowing._id);
+
+    res.status(200).json({
+      message: "Unfollow Successful",
+      isUserFollowing,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      message: "Internal server error",
+      error: err.message,
+    });
+  }
+};
+
+export const getFollowingDetail = async (req, res) => {
+  try {
+    const userName = req.params.username;
+
+    const isUserExist = await userModel.findOne({ username: userName });
+    if (!isUserExist) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
+    const following = await followModel.find({
+      follower: userName,
+    });
+    res.status(200).json({
+      message: "Fetching successful",
+      following,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Internal Server error",
+      error: error.message,
+    });
+  }
+};
+
+export const getFollowerDetail = async (req, res) => {
+  try {
+    const username = req.params.username;
+    const followers = await followModel.find({
+      followee: username,
+    });
+    res.status(200).json({
+      message: "Followers Fetched",
+      count: followers.length,
+      followers,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Internal server error",
+      error: error.message,
+    });
   }
 };

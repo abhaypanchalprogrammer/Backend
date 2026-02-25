@@ -5,7 +5,9 @@ const userSchema = new mongoose.Schema(
       type: String,
       unique: [true, "This Username is not available"],
       required: [true, "Username is required"],
+      match: [/^\S+$/, "Username cannot contain spaces"],
     },
+    name: String,
     email: {
       type: String,
       unique: [true, "This email is already linked with another account"],
