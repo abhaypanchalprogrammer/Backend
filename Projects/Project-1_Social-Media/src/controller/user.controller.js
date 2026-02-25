@@ -24,8 +24,12 @@ export const followUserController = async (req, res) => {
       followee: followeeUserName,
     });
     if (isAlreadyFollowed) {
+      await followModel.findOneAndDelete({
+        follower: followerUsername,
+        followee: followeeUserName,
+      });
       return res.status(200).json({
-        message: "Already followed",
+        message: "Unfollowed",
         isAlreadyFollowed,
       });
     }
@@ -41,35 +45,6 @@ export const followUserController = async (req, res) => {
     res
       .status(500)
       .json({ message: "Internal server error", error: error.message });
-  }
-};
-
-export const unfollowController = async (req, res) => {
-  try {
-    const followerUsername = req.user.username;
-    const followeeUserName = req.params.username;
-
-    const isUserFollowing = await followModel.findOne({
-      follower: followerUsername,
-      followee: followeeUserName,
-    });
-
-    if (!isUserFollowing) {
-      return res.status(200).json({
-        message: `You are not following ${followerUsername}`,
-      });
-    }
-    await followModel.findByIdAndDelete(isUserFollowing._id);
-
-    res.status(200).json({
-      message: "Unfollow Successful",
-      isUserFollowing,
-    });
-  } catch (err) {
-    return res.status(500).json({
-      message: "Internal server error",
-      error: err.message,
-    });
   }
 };
 
