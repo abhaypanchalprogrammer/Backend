@@ -1,25 +1,30 @@
 import mongoose from "mongoose";
-const userSchema = new mongoose.Schema({
-  username: {
-    type: String,
-    unique: [true, "This Username is not available"],
-    required: [true, "Username is required"],
+const userSchema = new mongoose.Schema(
+  {
+    username: {
+      type: String,
+      unique: [true, "This Username is not available"],
+      required: [true, "Username is required"],
+    },
+    email: {
+      type: String,
+      unique: [true, "This email is already linked with another account"],
+      required: [true, "Email address is required"],
+    },
+    password: {
+      type: String,
+      required: [true, "Password is required"],
+    },
+    bio: String,
+    profileImage: {
+      type: String,
+      default: "https://ik.imagekit.io/2xkuqfuep/image.png",
+    },
   },
-  email: {
-    type: String,
-    unique: [true, "This email is already linked with another account"],
-    required: [true, "Email address is required"],
+  {
+    timestamps: true,
   },
-  password: {
-    type: String,
-    required: [true, "Password is required"],
-  },
-  bio: String,
-  profileImage: {
-    type: String,
-    default: "https://ik.imagekit.io/2xkuqfuep/image.png",
-  },
-});
+);
 
 const userModel = mongoose.model("user", userSchema);
 

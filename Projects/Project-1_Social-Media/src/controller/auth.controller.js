@@ -41,6 +41,7 @@ export const registerUser = async (req, res) => {
       {
         //user ka data hona chahiye and wo unique hona chahiye
         id: user._id,
+        username: user.username,
       },
       process.env.JWT_SECRET,
       { expiresIn: "1d" },
@@ -87,6 +88,7 @@ export const loginUser = async (req, res) => {
     const token = jwt.sign(
       {
         id: user._id,
+        username: user.username,
       },
       process.env.JWT_SECRET,
       { expiresIn: "1d" },
