@@ -1,0 +1,48 @@
+main {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-container {
+  min-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    input {
+      outline: none;
+      padding-inline: 1.5rem;
+      padding-block: 1rem;
+      border-radius: 1rem;
+      font-size: 1rem;
+      &::placeholder {
+        font-size: 1rem;
+        color: #a6a6a6;
+        align-self: center;
+      }
+    }
+    button {
+      border: none;
+      padding-inline: 1.5rem;
+      padding-block: 1rem;
+      border-radius: 1rem;
+      background-color: #bd0c23;
+      color: whitesmoke;
+      font-size: 1.1rem;
+      cursor: pointer;
+    }
+  }
+  .toggleForm {
+    color: #df5265;
+    cursor: pointer;
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

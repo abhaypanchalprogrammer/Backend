@@ -1,7 +1,6 @@
 import userModel from "../models/user.model.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import followModel from "../models/follow.model.js";
 
 /**
  * get user's data using req.body
