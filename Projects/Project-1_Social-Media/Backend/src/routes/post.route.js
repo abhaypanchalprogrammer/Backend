@@ -16,6 +16,6 @@ postRouter.post(
   identifyUser,
   createPostController,
 );
-postRouter.get("/", identifyUser, getPostController);
+postRouter.get("/feed", identifyUser, getPostController);
 postRouter.get("/details/:postId", identifyUser, getPostDetails);
 export default postRouter;

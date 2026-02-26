@@ -1,24 +1,31 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../Hooks/useAuth.js";
 
 const Register = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { handleRegister } = useAuth();
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+  const { handleRegister, loading } = useAuth();
+
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    handleRegister(username, email, password).then((res) => {
+    try {
+      const res = await handleRegister(username, email, password);
+      if (!res) return;
       console.log(res);
-      alert("Registration successful");
       setUsername("");
       setPassword("");
       setEmail("");
-    });
-    password.length < 6 ? alert("password must be 6 digits") : "";
+      navigate("/");
+    } catch (error) {
+      setError(error.response?.data?.message || "Registration Failed");
+    }
   };
+
   return (
     <main>
       <div className="form-container">
@@ -45,7 +52,10 @@ const Register = () => {
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Enter Your Password"
           />
-          <button>Register</button>
+          <p style={{ color: "red" }}>{error}</p>
+          <button className="button register-button">
+            {loading ? "Setting Up..." : "Register"}
+          </button>
         </form>
         <p>
           Already have an account?

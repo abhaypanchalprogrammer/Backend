@@ -6,19 +6,21 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const { handleLogin, loading } = useAuth();
+  const [error, setError] = useState("");
   const navigate = useNavigate();
-  if (loading) {
-    return <h1>Loading.......</h1>;
-  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    handleLogin(username, password).then((res) => {
+    try {
+      const res = await handleLogin(username, password);
+      if (!res) return;
       console.log(res);
-      alert("Login Successful");
       setPassword("");
       setUsername("");
       navigate("/");
-    });
+    } catch (error) {
+      setError(error.response?.data?.message || "Login Failed");
+    }
   };
   return (
     <main>
@@ -41,7 +43,12 @@ const Login = () => {
             placeholder="Enter Your Password"
             required
           />
-          <button>Login</button>
+          <p style={{ color: "red", display: "flex", alignItems: "center" }}>
+            {error}
+          </p>
+          <button className="button primary-button">
+            {loading ? "Logging in.." : "Login"}
+          </button>
         </form>
         <p>
           Already have an account?

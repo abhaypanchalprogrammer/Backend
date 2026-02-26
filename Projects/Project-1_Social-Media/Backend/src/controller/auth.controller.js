@@ -15,7 +15,7 @@ export const registerUser = async (req, res) => {
     const { username, name, email, password, bio, profileImage } = req.body;
     if (!password || password.length < 6) {
       return res.status(400).json({
-        message: "Please give you password",
+        message: "Password must be six characters",
       });
     }
     if (username.includes(" ")) {
