@@ -1,5 +1,6 @@
 import postModel from "../models/post.model.js";
 import ImageKit, { toFile } from "@imagekit/nodejs";
+import { likeModel } from "../models/like.model.js";
 
 const client = new ImageKit({
   privateKey: process.env.IMAGEKIT_PRIVATE_KEY,
@@ -81,10 +82,21 @@ export const getPostDetails = async (req, res) => {
 };
 
 export const getFeedController = async (req, res) => {
-  const posts = await await postModel
-    .find()
-    .sort({ createdAt: -1 })
-    .populate("user");
+  const user = req.user;
+  const posts = await Promise.all(
+    (
+      await postModel.find().sort({ createdAt: -1 }).populate("user").lean()
+    ).map(async (post) => {
+      const isLiked = await likeModel.findOne({
+        user: user.id,
+        post: post._id,
+      });
+
+      post.isLiked = !!isLiked;
+      return post;
+    }),
+  );
+
   res.status(200).json({
     message: "post fetched successfully",
     posts,

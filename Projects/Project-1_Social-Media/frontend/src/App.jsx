@@ -1,10 +1,13 @@
-import { AuthProvider } from "./features/auth.context.jsx";
+import { AuthProvider } from "./features/auth/auth.context.jsx";
 import { Routers } from "./Routers.jsx";
 import "./features/shared/style.scss";
+import { PostProvider } from "./features/post/PostContext.jsx";
 function App() {
   return (
     <AuthProvider>
-      <Routers />
+      <PostProvider>
+        <Routers />
+      </PostProvider>
     </AuthProvider>
   );
 }
