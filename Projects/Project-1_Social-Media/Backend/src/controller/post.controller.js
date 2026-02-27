@@ -24,9 +24,13 @@ export const createPostController = async (req, res) => {
       imgUrl: file.url,
       user: req.user.id,
     });
+    const populatedPost = await newPost.populate(
+      "user",
+      "username profileImage",
+    );
     res.status(201).json({
       message: "Post Created Successfully",
-      newPost,
+      newPost: populatedPost,
     });
   } catch (err) {
     res.status(500).json({

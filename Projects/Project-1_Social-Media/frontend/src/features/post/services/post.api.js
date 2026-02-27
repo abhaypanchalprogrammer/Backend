@@ -12,3 +12,16 @@ export const postApi = async () => {
     throw error;
   }
 };
+
+export const createPost = async (file, caption) => {
+  try {
+    const formData = new FormData();
+    formData.append("image", file);
+    formData.append("caption", caption);
+    const res = await API.post("/", formData);
+
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};

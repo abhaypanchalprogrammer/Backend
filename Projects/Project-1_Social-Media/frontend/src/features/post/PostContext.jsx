@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import { postApi } from "./services/post.api.js";
+import { postApi, createPost } from "./services/post.api.js";
 
 export const PostContext = createContext();
 export const PostProvider = ({ children }) => {
@@ -19,6 +19,25 @@ export const PostProvider = ({ children }) => {
       setLoading(false);
     }
   };
+
+  const handleCreatePost = async (file, caption) => {
+    try {
+      setLoading(true);
+
+      const data = await createPost(file, caption);
+
+      if (!data || !data.newPost) {
+        console.log("Invalid response:", data);
+        return;
+      }
+
+      setPosts((prev) => [data.newPost, ...prev]);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
   useEffect(() => {
     fetchPost();
   }, []);
@@ -31,6 +50,7 @@ export const PostProvider = ({ children }) => {
         loading,
         error,
         fetchPost,
+        handleCreatePost,
       }}
     >
       {children}
