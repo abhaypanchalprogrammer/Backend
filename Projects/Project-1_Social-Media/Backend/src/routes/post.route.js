@@ -3,6 +3,7 @@ import {
   createPostController,
   getPostController,
   getPostDetails,
+  getFeedController,
 } from "../controller/post.controller.js";
 const postRouter = express.Router();
 import multer from "multer";
@@ -16,6 +17,8 @@ postRouter.post(
   identifyUser,
   createPostController,
 );
-postRouter.get("/feed", identifyUser, getPostController);
+postRouter.get("/getme", identifyUser, getPostController);
 postRouter.get("/details/:postId", identifyUser, getPostDetails);
+
+postRouter.get("/feed", identifyUser, getFeedController);
 export default postRouter;

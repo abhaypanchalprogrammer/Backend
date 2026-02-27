@@ -7,4 +7,8 @@
   cursor: pointer;
   color: whitesmoke;
   background-color: #bd0c23;
+  transition: all 0.2s;
+  &:focus {
+    transform: scale(0.9);
+  }
 }

@@ -1,4 +1,5 @@
 import followModel from "../models/follow.model.js";
+import postModel from "../models/post.model.js";
 import userModel from "../models/user.model.js";
 
 export const followUserController = async (req, res) => {
@@ -9,12 +10,12 @@ export const followUserController = async (req, res) => {
       username: followeeUserName,
     });
     if (!isUserExist) {
-      return res.status(403).json({
+      return res.status(404).json({
         message: `${followeeUserName} is not exists`,
       });
     }
     if (followeeUserName === followerUsername) {
-      return res.status(404).json({
+      return res.status(400).json({
         message: "You cant follow yourself",
       });
     }
@@ -30,7 +31,6 @@ export const followUserController = async (req, res) => {
       });
       return res.status(200).json({
         message: "Unfollowed",
-        isAlreadyFollowed,
       });
     }
     const followRequst = await followModel.create({
@@ -86,6 +86,47 @@ export const getFollowerDetail = async (req, res) => {
     });
   } catch (error) {
     return res.status(500).json({
+      message: "Internal server error",
+      error: error.message,
+    });
+  }
+};
+
+export const getUserController = async (req, res) => {
+  try {
+    const loggedInUser = req.user.username;
+    const username = req.params.username;
+
+    const isOwnProfile = loggedInUser === username;
+    const user = await userModel.findOne({ username }).select("-password");
+    if (!user) {
+      return res.status(404).json({ message: "user not found" });
+    }
+
+    const [followerCount, followingCount, posts] = await Promise.all([
+      followModel.countDocuments({
+        followee: username,
+      }),
+      followModel.countDocuments({
+        follower: username,
+      }),
+      postModel
+        .find({
+          user: username,
+        })
+        .sort({ createdAt: -1 }),
+    ]);
+    res.status(200).json({
+      message: "Profile Fetched",
+      user,
+      followerCount,
+      followingCount,
+      posts,
+      count: posts.length,
+      isOwnProfile,
+    });
+  } catch (error) {
+    res.status(500).json({
       message: "Internal server error",
       error: error.message,
     });

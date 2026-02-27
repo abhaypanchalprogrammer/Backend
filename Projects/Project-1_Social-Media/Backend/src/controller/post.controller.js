@@ -79,3 +79,14 @@ export const getPostDetails = async (req, res) => {
     });
   }
 };
+
+export const getFeedController = async (req, res) => {
+  const posts = await await postModel
+    .find()
+    .sort({ createdAt: -1 })
+    .populate("user");
+  res.status(200).json({
+    message: "post fetched successfully",
+    posts,
+  });
+};
