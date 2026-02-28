@@ -14,7 +14,7 @@ const corsOptions = {
 
 /* ✅ MIDDLEWARE ORDER MATTERS */
 app.use(cors(corsOptions));
-app.options("*", cors(corsOptions));
+app.options("*name", cors(corsOptions));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
