@@ -52,7 +52,11 @@ export const registerUser = async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: "1d" },
     );
-    res.cookie("token", token);
+    res.cookie("token", token,{
+  httpOnly: true,
+  secure: true,
+  sameSite: "none",
+});
     res.status(201).json({
       message: "User Registerd Successfully",
       user: {
@@ -107,7 +111,11 @@ export const loginUser = async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: "1d" },
     );
-    res.cookie("token", token);
+    res.cookie("token", token,{
+  httpOnly: true,
+  secure: true,
+  sameSite: "none",
+});
     res.status(200).json({
       message: "login successful",
       username: user.username,
