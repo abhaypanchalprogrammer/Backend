@@ -86,7 +86,7 @@ export const getPostDetails = async (req, res) => {
 };
 
 export const getFeedController = async (req, res) => {
-  const user = req.user;
+  const user = req.user.id;
   const posts = await Promise.all(
     (
       await postModel.find().sort({ createdAt: -1 }).populate("user").lean()

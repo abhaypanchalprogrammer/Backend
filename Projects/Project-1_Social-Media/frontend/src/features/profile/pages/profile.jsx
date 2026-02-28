@@ -11,7 +11,7 @@ const Profile = () => {
     if (!authLoading && user?.username) {
       fetchProfile(user.username);
     }
-  }, [user, authLoading, fetchProfile]);
+  }, [user, user?.username]);
   useEffect(() => {
     console.log("AUTH USER:", user);
   }, [user]);
@@ -24,7 +24,7 @@ const Profile = () => {
   console.log("Username param:", user?.username);
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
-  if (!profile) return <h1 style={{ color: "black" }}>not fetched</h1>;
+  if (!profile) return <h1 style={{ color: "black" }}>{error}</h1>;
   return (
     <div className="profile-page">
       <div className="profile-container">

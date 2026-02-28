@@ -20,7 +20,7 @@ const Register = () => {
       setUsername("");
       setPassword("");
       setEmail("");
-      navigate("/");
+      navigate("/home");
     } catch (error) {
       setError(error.response?.data?.message || "Registration Failed");
     }

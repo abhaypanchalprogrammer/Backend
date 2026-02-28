@@ -7,13 +7,13 @@ export const PostProvider = ({ children }) => {
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
   const fetchPost = async () => {
+    setLoading(true);
     try {
-      setLoading(true);
       const data = await postApi();
       setPosts(data.posts);
       setError(null);
+      setLoading(false);
     } catch (error) {
       setError(error.response?.data?.message || error.message);
 

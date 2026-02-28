@@ -1,9 +1,10 @@
-import { createContext, useEffect, useState, useCallback } from "react";
+import { createContext, useState, useCallback } from "react";
 import { getProfile } from "./services/profile.api.js";
+import { getMe } from "../auth/services/auth.api.js";
 
 export const ProfileContext = createContext();
 export const ProfileProvider = ({ children }) => {
-  const [profile, setprofile] = useState(null);
+  const [profile, setProfile] = useState({});
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -12,9 +13,10 @@ export const ProfileProvider = ({ children }) => {
     setLoading(true);
     try {
       const res = await getProfile(username);
-      console.log("Profile API response:", res);
-      setprofile(res.profile);
+      // const res = await getMe();
+      setProfile(res.profile);
       setPosts(res.posts);
+      // console.log("profile Data = ", profile);
     } catch (error) {
       console.log("PROFILE ERROR:", error.response?.status);
       setError(error.response?.data?.message);

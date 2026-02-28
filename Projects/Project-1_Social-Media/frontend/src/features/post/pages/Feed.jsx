@@ -1,10 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/feed.scss";
 import { usePost } from "../hook/usePost.jsx";
-import Nav from "../../shared/components/Nav.jsx";
 import axios from "axios";
+import { useAuth } from "../../auth/Hooks/useAuth.js";
 const Feed = () => {
-  const { posts, setPosts, loading, error } = usePost();
+  const { posts, setPosts, loading, error, fetchPost } = usePost();
+  const { user, loading: authLoading } = useAuth();
+  useEffect(() => {
+    if (!authLoading && user) {
+      // fetchPost should call postApi internally
+      fetchPost();
+    }
+  }, [authLoading, user]);
   const handleLike = async (postId) => {
     const res = await axios.post(
       `http://localhost:3001/api/post/${postId}/like`,
