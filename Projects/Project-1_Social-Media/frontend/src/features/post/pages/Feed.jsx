@@ -14,7 +14,7 @@ const Feed = () => {
   }, [authLoading, user]);
   const handleLike = async (postId) => {
     const res = await axios.post(
-      `http://localhost:3001/api/post/${postId}/like`,
+      `${import.meta.env.VITE_API_URL}/api/post/${postId}/like`,
       {},
       { withCredentials: true },
     );
