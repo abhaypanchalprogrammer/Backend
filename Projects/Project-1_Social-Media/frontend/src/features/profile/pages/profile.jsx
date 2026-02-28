@@ -12,6 +12,13 @@ const Profile = () => {
       fetchProfile(user.username);
     }
   }, [user, authLoading, fetchProfile]);
+  useEffect(() => {
+    console.log("AUTH USER:", user);
+  }, [user]);
+
+  useEffect(() => {
+    console.log("PROFILE STATE:", profile);
+  }, [profile]);
   console.log("Profile from context:", profile);
 
   console.log("Username param:", user?.username);

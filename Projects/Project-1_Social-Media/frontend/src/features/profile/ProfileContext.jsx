@@ -12,9 +12,11 @@ export const ProfileProvider = ({ children }) => {
     setLoading(true);
     try {
       const res = await getProfile(username);
+      console.log("Profile API response:", res);
       setprofile(res.profile);
       setPosts(res.posts);
     } catch (error) {
+      console.log("PROFILE ERROR:", error.response?.status);
       setError(error.response?.data?.message);
     } finally {
       setLoading(false);

@@ -17,7 +17,7 @@ const Login = () => {
       console.log(res);
       setPassword("");
       setUsername("");
-      navigate("/");
+      navigate("/home");
     } catch (error) {
       setError(error.response?.data?.message || "Login Failed");
     }

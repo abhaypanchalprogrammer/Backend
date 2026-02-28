@@ -1,13 +1,13 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:3001/api/auth",
+  baseURL: "http://localhost:3001",
   withCredentials: true,
 });
 
 export const login = async (username, password) => {
   try {
-    const res = await api.post("/login", { username, password });
+    const res = await api.post("/api/auth/login", { username, password });
     return res.data;
   } catch (error) {
     throw error;
@@ -16,7 +16,11 @@ export const login = async (username, password) => {
 
 export const register = async (username, email, password) => {
   try {
-    const res = await api.post("/register", { username, email, password });
+    const res = await api.post("/api/auth/register", {
+      username,
+      email,
+      password,
+    });
     return res.data;
   } catch (error) {
     throw error;
@@ -25,7 +29,7 @@ export const register = async (username, email, password) => {
 
 export const getMe = async () => {
   try {
-    const res = await api.get("/getme");
+    const res = await api.get("/api/auth/getme");
     return res.data;
   } catch (error) {
     throw error;

@@ -6,8 +6,8 @@ import Home from "./features/shared/components/Home.jsx";
 export const Routers = () => {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/login" element={<Login />} />
+      <Route path="/home" element={<Home />} />
+      <Route path="/" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/createpost" element={<CreatePost />} />
     </Routes>

@@ -34,35 +34,32 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    const fetchUser = async () => {
+    const init = async () => {
       try {
         const res = await getMe();
-        if (res?.user) {
-          setUser(res.user);
-        }
-      } catch (err) {
+        setUser(res.user);
+      } catch {
         setUser(null);
       } finally {
         setLoading(false);
       }
     };
-    fetchUser();
+
+    init();
   }, []);
+
   const handleLogin = async (username, password) => {
-    setLoading(true);
-    try {
-      const res = await login(username, password);
-      setUser(res.user);
-      return res;
-    } finally {
-      setLoading(false);
-    }
+    await login(username, password);
+    const res = await getMe();
+    setUser(res.user);
+    return res;
   };
+
   return (
     <AuthContext.Provider value={{ user, loading, handleLogin }}>
-      {" "}
-      {children}{" "}
+      {children}
     </AuthContext.Provider>
   );
 };
