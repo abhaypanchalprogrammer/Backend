@@ -32,40 +32,37 @@ export const AuthContext = createContext();
 //   };
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const res = await getMe();
+        if (res?.user) {
+          setUser(res.user);
+        }
+      } catch (err) {
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchUser();
+  }, []);
   const handleLogin = async (username, password) => {
     setLoading(true);
     try {
       const res = await login(username, password);
       setUser(res.user);
       return res;
-    } catch (error) {
-      console.log(error);
-      throw error;
     } finally {
       setLoading(false);
     }
   };
-  const handleRegister = async (username, email, password) => {
-    setLoading(true);
-    try {
-      const res = await register(username, email, password);
-      setUser(res.user);
-      return res;
-    } catch (error) {
-      console.log(error);
-      throw error;
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
-    <AuthContext.Provider
-      value={{ user, loading, handleLogin, handleRegister }}
-    >
-      {children}
+    <AuthContext.Provider value={{ user, loading, handleLogin }}>
+      {" "}
+      {children}{" "}
     </AuthContext.Provider>
   );
 };

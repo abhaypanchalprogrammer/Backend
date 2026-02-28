@@ -12,7 +12,29 @@ body,
   height: 100%;
 }
 html {
-  background-color: #1d1d1d;
-  color: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
   font-family: system-ui;
+}
+.main {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: #f4f6f9;
+}
+
+.home-layout {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.profile-page {
+  width: 400px;
+  position: sticky;
+  top: 20px;
 }

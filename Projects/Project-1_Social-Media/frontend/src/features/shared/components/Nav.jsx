@@ -9,7 +9,7 @@ const Nav = () => {
   };
   return (
     <nav>
-      <p>Insta</p>
+      <p>Social-Media</p>
       <button onClick={navigateToCreatePost} className="button primary-button">
         New Post
       </button>

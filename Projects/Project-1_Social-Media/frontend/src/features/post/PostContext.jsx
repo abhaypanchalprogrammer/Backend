@@ -1,11 +1,13 @@
 import { createContext, useEffect, useState } from "react";
 import { postApi, createPost } from "./services/post.api.js";
+import { useNavigate } from "react-router-dom";
 
 export const PostContext = createContext();
 export const PostProvider = ({ children }) => {
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
   const fetchPost = async () => {
     try {
       setLoading(true);
@@ -14,6 +16,7 @@ export const PostProvider = ({ children }) => {
       setError(null);
     } catch (error) {
       setError(error.response?.data?.message || error.message);
+
       console.log(error);
     } finally {
       setLoading(false);

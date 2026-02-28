@@ -103,27 +103,35 @@ export const getUserController = async (req, res) => {
       return res.status(404).json({ message: "user not found" });
     }
 
-    const [followerCount, followingCount, posts] = await Promise.all([
-      followModel.countDocuments({
-        followee: username,
-      }),
-      followModel.countDocuments({
-        follower: username,
-      }),
-      postModel
-        .find({
-          user: username,
-        })
-        .sort({ createdAt: -1 }),
-    ]);
+    const [followerCount, followingCount, posts, isFollowing] =
+      await Promise.all([
+        followModel.countDocuments({
+          followee: username,
+        }),
+        followModel.countDocuments({
+          follower: username,
+        }),
+        postModel
+          .find({
+            user: user._id,
+          })
+          .sort({ createdAt: -1 }),
+        followModel.exists({
+          follower: loggedInUser,
+          followee: username,
+        }),
+      ]);
     res.status(200).json({
       message: "Profile Fetched",
-      user,
-      followerCount,
-      followingCount,
+      profile: {
+        ...user.toObject(),
+        followerCount,
+        followingCount,
+        count: posts.length,
+        isOwnProfile,
+        isFollowing: !!isFollowing,
+      },
       posts,
-      count: posts.length,
-      isOwnProfile,
     });
   } catch (error) {
     res.status(500).json({

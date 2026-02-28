@@ -21,7 +21,6 @@ const Feed = () => {
   if (error) return <h1>{error}</h1>;
   return (
     <main className="feed-page">
-      <Nav />
       <div className="feed">
         <div className="posts">
           {posts.map((post) => (
@@ -32,7 +31,7 @@ const Feed = () => {
                 </div>
                 <p>{post.user?.username}</p>
               </div>
-              <img src={post.imgUrl} alt="" />
+              <img className="post-image" src={post.imgUrl} alt="" />
               <div className="icons">
                 <div className="left">
                   <button onClick={() => handleLike(post._id)}>
