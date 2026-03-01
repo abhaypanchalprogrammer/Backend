@@ -1,16 +1,94 @@
-# React + Vite
+📱 Social Media App :-
+A full-stack social media web application where users can register, log in, follow other users, and create posts.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Deployed with:
+Frontend → Vercel
+Backend → Render
+Database → MongoDB
 
-Currently, two official plugins are available:
+🚀 Live Demo
+🔗 Frontend: https://app-socialmedia-app.vercel.app
+🔗 Backend API: https://socialmedia-60s2.onrender.com
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+✨ Features
+🔐 User Authentication (Register / Login)
+👤 User Profiles
+➕ Follow / Unfollow Users
+📊 Followers & Following Count
+📝 Create & View Posts
+📰 Feed (Latest Posts First)
+🔒 Protected Routes
+🌐 CORS Configured for Production
 
-## React Compiler
+🛠 Tech Stack
+Frontend
+React (Vite)
+Axios
+React Router
+CSS
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Backend
+Node.js
+Express.js
+MongoDB
+Mongoose
+JWT Authentication
+CORS
 
-## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+FRONTEND_URL=https://app-socialmedia-app.vercel.app
+Frontend (.env)
+VITE_API_URL=https://socialmedia-60s2.onrender.com
+
+🧑‍💻 Installation (Local Setup)
+1️⃣ Clone Repository
+https://github.com/abhaypanchalprogrammer/Backend/tree/main/Projects/Project-1_Social-Media
+cd social-media-app
+
+2️⃣ Setup Backend
+cd backend
+npm install
+npm run dev
+
+Backend runs on:
+
+http://localhost:3001
+3️⃣ Setup Frontend
+cd frontend
+npm install
+npm run dev
+Frontend runs on:
+http://localhost:5173
+🌍 Deployment
+Frontend (Vercel)
+Framework: Vite
+Build Command: npm run build
+Output Directory: dist
+
+Environment Variable:
+VITE_API_URL
+Backend (Render)
+Environment Variables configured
+CORS configured with exact frontend URL (no trailing slash)
+
+🔐 Authentication Flow
+-User logs in
+-Backend generates JWT
+-Token stored in localStorage
+-Token sent in Authorization header
+-Protected routes validate user via middleware
+
+
+
+🧠 Future Improvements:-
+-💬 Comments
+-🔔 Notifications
+-🔍 Search users
+-🌓 Dark mode
+-🧪 Unit testing
+
+👨‍💻 Author
+Developed by Abhay Panchal
+
+📄 License
+This project is open source and available under the MIT License.
