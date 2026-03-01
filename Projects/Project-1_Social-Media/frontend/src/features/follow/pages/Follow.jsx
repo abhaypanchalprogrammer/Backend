@@ -12,6 +12,7 @@ const Follow = () => {
         setLoading(true);
         const res = await axios.get(
           `${import.meta.env.VITE_API_URL}/api/user/users`,
+          { withCredentials: true },
         );
         setUsers(res.data);
       } catch (error) {
@@ -27,7 +28,9 @@ const Follow = () => {
   const handleFollowToggle = async (username) => {
     try {
       const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/follow/${username}`,
+        `${import.meta.env.VITE_API_URL}/api/user/follow/${username}`,
+        {},
+        { withCredentials: true },
       );
 
       setUsers((prev) =>

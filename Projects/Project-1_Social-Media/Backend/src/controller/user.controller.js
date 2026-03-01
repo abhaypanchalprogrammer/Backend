@@ -149,3 +149,34 @@ export const getUserController = async (req, res) => {
     });
   }
 };
+
+export const getUsersListController = async (req, res) => {
+  try {
+    const loggedInUser = req.user.username;
+
+    const users = await userModel
+      .find({ username: { $ne: loggedInUser } })
+      .select("-password");
+
+    const usersWithFollowStatus = await Promise.all(
+      users.map(async (user) => {
+        const isFollowing = await followModel.exists({
+          follower: loggedInUser,
+          followee: user.username,
+        });
+
+        return {
+          ...user.toObject(),
+          isFollowing: !!isFollowing,
+        };
+      }),
+    );
+
+    res.status(200).json(usersWithFollowStatus);
+  } catch (error) {
+    res.status(500).json({
+      message: "Internal server error",
+      error: error.message,
+    });
+  }
+};
