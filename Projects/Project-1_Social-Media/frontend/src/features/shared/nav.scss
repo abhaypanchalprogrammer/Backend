@@ -1,13 +1,46 @@
+
 nav {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   width: 100%;
-  padding-inline: 2rem;
-  padding-block: 0.5rem;
-  color: black;
-  background-color: white;
-  p {
-    font-size: 2rem;
+  padding: .85rem 2rem;
+  background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+  box-shadow: 0 2px 16px rgba(0, 0, 0, .3);
+  position: sticky;
+  top: 0;
+  z-index: 999;
+
+
+  .nav-brand {
+    font-size: 1.4rem;
+    font-weight: 800;
+    letter-spacing: -.02em;
+    background: linear-gradient(90deg, #a5b4fc, #f0abfc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  > p {
+    font-size: 1.4rem;
+    font-weight: 800;
+    letter-spacing: -.02em;
+    background: linear-gradient(90deg, #a5b4fc, #f0abfc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .button {
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    box-shadow: 0 2px 10px rgba(99, 102, 241, .5);
+    font-size: .88rem;
+    padding: .5rem 1.2rem;
+
+    &:hover {
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      transform: translateY(-1px);
+    }
   }
 }
