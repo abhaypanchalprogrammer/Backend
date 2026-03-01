@@ -6,7 +6,7 @@ const app = express();
 
 /* ✅ DEFINE CORS OPTIONS ONCE */
 const corsOptions = {
-  origin: "https://app-socialmedia-app.vercel.app/",
+  origin: "https://app-socialmedia-app.vercel.app",
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
