@@ -29,17 +29,26 @@ export const followUserController = async (req, res) => {
         follower: followerUsername,
         followee: followeeUserName,
       });
+      const followersCount = await followModel.countDocuments({
+        followee: followeeUserName,
+      });
       return res.status(200).json({
         message: "Unfollowed",
+        following: false,
+        followersCount,
       });
     }
     const followRequst = await followModel.create({
       follower: followerUsername,
       followee: followeeUserName,
     });
+    const followersCount = await followModel.countDocuments({
+      followee: followeeUserName,
+    });
     res.status(201).json({
       message: `You are now following ${followeeUserName}`,
-      followRequst,
+      followersCount,
+      following: true,
     });
   } catch (error) {
     res
