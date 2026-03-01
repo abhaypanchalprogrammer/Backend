@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import UserCard from "./UserCard.jsx";
+import "./style.scss";
 
 const Follow = () => {
   const [users, setUsers] = useState([]);
