@@ -1,14 +1,51 @@
+/* ─── Button System ────────────────────────────────────── */
 .button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .4rem;
   border: none;
-  padding-inline: 1.5rem;
-  padding-block: 1rem;
-  border-radius: 1rem;
-  font-size: 1.1rem;
+  border-radius: var(--radius-pill);
+  font-family: inherit;
+  font-size: .95rem;
+  font-weight: 600;
+  padding: .6rem 1.4rem;
   cursor: pointer;
-  color: whitesmoke;
-  background-color: #bd0c23;
-  transition: all 0.2s;
+  transition: var(--transition);
+  letter-spacing: .01em;
+  white-space: nowrap;
+
+  /* Default — primary indigo */
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, .35);
+
+  &:hover {
+    background: var(--accent-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(99, 102, 241, .45);
+  }
+
   &:active {
-    transform: scale(0.9);
+    transform: scale(.96);
+    box-shadow: none;
+  }
+
+  &:disabled {
+    opacity: .6;
+    cursor: not-allowed;
+    transform: none;
+  }
+}
+
+.button-ghost {
+  background: transparent;
+  color: var(--accent);
+  border: 2px solid var(--accent);
+  box-shadow: none;
+
+  &:hover {
+    background: var(--accent-light);
+    box-shadow: none;
   }
 }
