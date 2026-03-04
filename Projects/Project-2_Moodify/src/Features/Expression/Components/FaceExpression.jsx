@@ -1,0 +1,40 @@
+import React, { useEffect, useRef, useState } from "react";
+import { detect, initialize } from "../Utils/utils.js";
+
+export default function FaceExpression() {
+  const videoRef = useRef(null);
+  const faceLandmarkerRef = useRef(null);
+  const [expression, setExpression] = useState("Initializing...");
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    const start = async () => {
+      await initialize({
+        faceLandmarkerRef,
+        videoRef,
+        setExpression,
+        setReady,
+      });
+    };
+
+    start();
+  }, []);
+
+  const handleDetect = () => {
+    detect({
+      faceLandmarkerRef,
+      videoRef,
+      setExpression,
+    });
+  };
+
+  return (
+    <div className="detect-face">
+      <video ref={videoRef} width="400" autoPlay playsInline muted />
+      <h2>Expression: {expression}</h2>
+      <button onClick={handleDetect} disabled={!ready}>
+        Detect Expression
+      </button>
+    </div>
+  );
+}
