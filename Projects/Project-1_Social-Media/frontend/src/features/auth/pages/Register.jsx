@@ -8,23 +8,31 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading,setLoading] = useState(false)
   const navigate = useNavigate();
-  const { handleRegister, loading } = useAuth();
+  const { handleRegister } = useAuth();
 
   const handleFormSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await handleRegister(username, email, password);
-      if (!res) return;
-      console.log(res);
-      setUsername("");
-      setPassword("");
-      setEmail("");
-      navigate("/home");
-    } catch (error) {
-      setError(error.response?.data?.message || "Registration Failed");
-    }
-  };
+  e.preventDefault();
+  setLoading(true);
+  setError("");
+
+  try {
+    const res = await handleRegister(username, email, password);
+
+    if (!res) return;
+
+    setUsername("");
+    setPassword("");
+    setEmail("");
+
+    navigate("/home");
+  } catch (error) {
+    setError(error.response?.data?.message || "Registration Failed");
+  } finally {
+    setLoading(false); 
+  }
+};
 
   return (
     <main>
@@ -53,13 +61,16 @@ const Register = () => {
             placeholder="Enter Your Password"
           />
           <p style={{ color: "red" }}>{error}</p>
-          <button className="button register-button">
-            {loading ? "Setting Up..." : "Register"}
-          </button>
+          <button
+  className="button register-button"
+  disabled={loading}
+>
+  {loading ? "Setting Up..." : "Register"}
+</button>
         </form>
         <p>
           Already have an account?
-          <Link className="toggleForm" to="/login">
+          <Link className="toggleForm" to="/">
             Login
           </Link>
         </p>

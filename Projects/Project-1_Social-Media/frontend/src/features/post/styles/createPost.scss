@@ -1,7 +1,91 @@
+
+.create-post-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 60%, #312e81 100%);
+  padding: 1.5rem;
+
+  .form-container {
+    width: 100%;
+    max-width: 480px;
+    background: rgba(255, 255, 255, .06);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid rgba(255, 255, 255, .13);
+    border-radius: 20px;
+    padding: 2.5rem 2rem;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, .5);
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+
+    h1 {
+      font-size: 1.9rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -.03em;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+
+      input[type="text"] {
+        padding: .85rem 1.2rem;
+        background: rgba(255, 255, 255, .08);
+        border: 1px solid rgba(255, 255, 255, .15);
+        border-radius: 10px;
+        color: #fff;
+        font-family: inherit;
+        font-size: .95rem;
+        outline: none;
+        transition: border-color .2s, background .2s;
+
+        &::placeholder {
+          color: rgba(255, 255, 255, .4);
+        }
+
+        &:focus {
+          border-color: #818cf8;
+          background: rgba(255, 255, 255, .12);
+        }
+      }
+
+      .button {
+        padding: .8rem;
+        font-size: 1rem;
+        border-radius: 10px;
+        background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        box-shadow: 0 4px 16px rgba(99, 102, 241, .5);
+
+        &:hover {
+          background: linear-gradient(135deg, #4f46e5, #7c3aed);
+        }
+      }
+    }
+  }
+}
+
+
 .image-label {
-  background-color: #eaeaea;
-  color: rgb(25, 25, 25);
-  padding: 0.5rem 1.5rem;
-  border-radius: 15px;
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  background: rgba(255, 255, 255, .1);
+  color: #c7d2fe;
+  border: 1px solid rgba(255, 255, 255, .2);
+  padding: .6rem 1.3rem;
+  border-radius: var(--radius-pill);
   cursor: pointer;
+  font-size: .88rem;
+  font-weight: 600;
+  transition: background .2s;
+  align-self: flex-start;
+
+  &:hover {
+    background: rgba(255, 255, 255, .18);
+  }
 }

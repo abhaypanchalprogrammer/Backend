@@ -5,12 +5,15 @@ import { useAuth } from "../Hooks/useAuth.js";
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { handleLogin, loading } = useAuth();
+  const { handleLogin } = useAuth();
+ const [loading,setLoading]= useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+      setError("");
     try {
       const res = await handleLogin(username, password);
       if (!res) return;
@@ -20,6 +23,8 @@ const Login = () => {
       navigate("/home");
     } catch (error) {
       setError(error.response?.data?.message || "Login Failed");
+    }finally{
+      setLoading(false);
     }
   };
   return (
@@ -46,12 +51,12 @@ const Login = () => {
           <p style={{ color: "red", display: "flex", alignItems: "center" }}>
             {error}
           </p>
-          <button className="button primary-button">
-            {loading ? "Logging in.." : "Login"}
+          <button className="button primary-button" disabled={loading}>
+            {loading ? "Please wait..." : "Login"}
           </button>
         </form>
         <p>
-          Already have an account?
+          Don't have any Account?
           <Link className="toggleForm" to="/register">
             Register
           </Link>
