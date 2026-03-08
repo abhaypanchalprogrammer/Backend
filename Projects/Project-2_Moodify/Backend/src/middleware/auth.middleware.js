@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import { userModel } from "../models/user.model.js";
 import { blacklistModel } from "../models/blacklist.model.js";
+import redis from "../config/cache.js";
 
 export const authUser = async (req, res, next) => {
   const token = req.cookies.token;
@@ -9,9 +10,7 @@ export const authUser = async (req, res, next) => {
       message: "token not provided",
     });
   }
-  const isTokenBlacklisted = await blacklistModel.findOne({
-    token,
-  });
+  const isTokenBlacklisted = await redis.get(token);
   if (isTokenBlacklisted) {
     return res.status(401).json({
       message: "Invalid Token",

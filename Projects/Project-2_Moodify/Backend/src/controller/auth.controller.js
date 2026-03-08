@@ -2,11 +2,16 @@ import jwt from "jsonwebtoken";
 import { userModel } from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import { blacklistModel } from "../models/blacklist.model.js";
+import redis from "../config/cache.js";
 
 export const registerUser = async (req, res) => {
   try {
     const { username, email, password } = req.body;
-
+    console.log(req.body);
+    console.log("BODY:", req.body);
+    console.log("username:", username);
+    console.log("email:", email);
+    console.log("password:", password);
     if (!username || !email || !password) {
       return res.status(400).json({
         message: "All fields are required",
@@ -109,9 +114,7 @@ export const getme = async (req, res) => {
 export const logoutUser = async (req, res) => {
   const token = req.cookies.token;
   res.clearCookie("token");
-  await blacklistModel.create({
-    token,
-  });
+  await redis.set(token, Date.now().toString());
 
   res.status(201).json({
     message: "logout successful",
