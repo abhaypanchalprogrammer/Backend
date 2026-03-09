@@ -7,11 +7,7 @@ import redis from "../config/cache.js";
 export const registerUser = async (req, res) => {
   try {
     const { username, email, password } = req.body;
-    console.log(req.body);
-    console.log("BODY:", req.body);
-    console.log("username:", username);
-    console.log("email:", email);
-    console.log("password:", password);
+
     if (!username || !email || !password) {
       return res.status(400).json({
         message: "All fields are required",
@@ -56,7 +52,7 @@ export const registerUser = async (req, res) => {
 export const loginUser = async (req, res) => {
   try {
     const { username, email, password } = req.body;
-    console.log(req.body); // i want in if condition like password is mandatory and either email or username is mandatory
+    console.log(req.body);
     if (!password || (!email && !username)) {
       return res.status(400).json({
         message: "All fields are required",

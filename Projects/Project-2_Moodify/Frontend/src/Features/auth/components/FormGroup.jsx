@@ -1,10 +1,17 @@
 import React from "react";
 
-const FormGroup = ({ label, placeholder, type }) => {
+const FormGroup = ({ value, onChange, label, placeholder, type }) => {
   return (
     <div className="form-group">
       <label htmlFor="label">{label}:</label>
-      <input type={type} id={label} placeholder={placeholder} />
+      <input
+        required
+        type={type}
+        id={label}
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+      />
     </div>
   );
 };
