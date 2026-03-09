@@ -60,7 +60,7 @@ export const detect = ({ faceLandmarkerRef, videoRef, setExpression }) => {
       setExpression("😊 Happy");
     } else if (frownLeft > 0.01 && frownRight > 0.01) {
       setExpression("☹️ Sad");
-    } else if (surprised > 0.5) {
+    } else if (surprised > 0.01) {
       setExpression("😲 Surprised");
     } else {
       setExpression("😐 Neutral");

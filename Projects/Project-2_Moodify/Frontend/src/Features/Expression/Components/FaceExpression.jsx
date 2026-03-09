@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { detect, initialize } from "../Utils/utils.js";
-
+import "../../shared/styles/global.scss";
 export default function FaceExpression() {
   const videoRef = useRef(null);
   const faceLandmarkerRef = useRef(null);
@@ -30,9 +30,9 @@ export default function FaceExpression() {
 
   return (
     <div className="detect-face">
-      <video ref={videoRef} width="400" autoPlay playsInline muted />
+      <video ref={videoRef} width="500" autoPlay playsInline muted />
       <h2>Expression: {expression}</h2>
-      <button onClick={handleDetect} disabled={!ready}>
+      <button className="button" onClick={handleDetect} disabled={!ready}>
         Detect Expression
       </button>
     </div>

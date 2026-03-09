@@ -56,8 +56,8 @@ export const registerUser = async (req, res) => {
 export const loginUser = async (req, res) => {
   try {
     const { username, email, password } = req.body;
-    console.log(req.body);
-    if ((!email && !username) || !password) {
+    console.log(req.body); // i want in if condition like password is mandatory and either email or username is mandatory
+    if (!password || (!email && !username)) {
       return res.status(400).json({
         message: "All fields are required",
       });
