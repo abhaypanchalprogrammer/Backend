@@ -23,11 +23,10 @@ const Login = () => {
       loginData.username = formData.identifier;
     }
     await handleLogin(loginData);
+    console.log("login successful");
     navigate("/");
   };
-  if (loading) {
-    return <Loader />;
-  }
+
   return (
     <main className="login-page">
       <div className="form-container">
@@ -54,8 +53,8 @@ const Login = () => {
           <p>
             Don't have an account? <Link to="/register">Register</Link>
           </p>
-          <button className="button" type="submit">
-            Login
+          <button className="button" type="submit" disabled={loading}>
+            {loading ? <Loader /> : "Login"}
           </button>
         </form>
       </div>
