@@ -6,8 +6,8 @@ import {
   registerUser,
 } from "../controller/auth.controller.js";
 import { authUser } from "../middleware/auth.middleware.js";
-export const router = Router();
-router.post("/register", registerUser);
-router.post("/login", loginUser);
-router.get("/getme", authUser, getme);
-router.get("/logout", logoutUser);
+export const authRouter = Router();
+authRouter.post("/register", registerUser);
+authRouter.post("/login", loginUser);
+authRouter.get("/getme", authUser, getme);
+authRouter.get("/logout", logoutUser);
