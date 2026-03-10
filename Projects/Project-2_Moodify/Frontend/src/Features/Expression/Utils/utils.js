@@ -40,6 +40,7 @@ export const detect = ({ faceLandmarkerRef, videoRef, setExpression }) => {
     videoRef.current,
     performance.now(),
   );
+  let currentExpression = "Neutral";
 
   if (results.faceBlendshapes?.length > 0) {
     const blendshapes = results.faceBlendshapes[0].categories;
@@ -57,15 +58,17 @@ export const detect = ({ faceLandmarkerRef, videoRef, setExpression }) => {
       blendshapes.find((b) => b.categoryName === "jawOpen")?.score || 0;
 
     if (smile > 0.4) {
-      setExpression("😊 Happy");
+      currentExpression = "happy";
     } else if (frownLeft > 0.01 && frownRight > 0.01) {
-      setExpression("☹️ Sad");
+      currentExpression = "sad";
     } else if (surprised > 0.01) {
-      setExpression("😲 Surprised");
+      currentExpression = "surprised";
     } else {
-      setExpression("😐 Neutral");
+      currentExpression = "Neutral";
     }
   } else {
-    setExpression("No face detected");
+    currentExpression = "No face detected";
   }
+  setExpression(currentExpression);
+  return currentExpression;
 };

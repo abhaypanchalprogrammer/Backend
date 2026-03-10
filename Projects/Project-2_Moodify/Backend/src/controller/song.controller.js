@@ -1,5 +1,4 @@
 import { songModel } from "../models/song.model.js";
-import multer from "multer";
 import id3 from "node-id3";
 import { uploadFile } from "../services/storage.service.js";
 export const uploadSong = async (req, res) => {

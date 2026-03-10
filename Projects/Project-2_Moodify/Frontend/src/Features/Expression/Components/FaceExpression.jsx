@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { detect, initialize } from "../Utils/utils.js";
 import "../../shared/styles/global.scss";
-export default function FaceExpression() {
+export default function FaceExpression({ onClick = () => {} }) {
   const videoRef = useRef(null);
   const faceLandmarkerRef = useRef(null);
   const [expression, setExpression] = useState("Initializing...");
@@ -21,11 +21,12 @@ export default function FaceExpression() {
   }, []);
 
   const handleDetect = () => {
-    detect({
+    const expression = detect({
       faceLandmarkerRef,
       videoRef,
       setExpression,
     });
+    onClick(expression);
   };
 
   return (
