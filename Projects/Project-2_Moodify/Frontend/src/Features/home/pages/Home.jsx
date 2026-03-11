@@ -5,7 +5,7 @@ import { useSong } from "../hooks/useSong.js";
 const Home = () => {
   const { handleGetSong } = useSong();
   return (
-    <div>
+    <div className="home">
       <FaceExpression
         onClick={(mood) => {
           handleGetSong({ mood });
