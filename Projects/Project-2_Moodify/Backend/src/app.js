@@ -1,24 +1,33 @@
 import cors from "cors";
-import express, { Router } from "express";
+import express from "express";
 import cookieParser from "cookie-parser";
 import path from "path";
+import { fileURLToPath } from "url";
+
 import { authRouter } from "./routes/auth.routes.js";
 import { songRouter } from "./routes/song.routes.js";
+
 const app = express();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: true,
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
   }),
 );
+
 app.use(express.json());
-app.use(express.static("./public"));
 app.use(cookieParser());
+
 app.use("/api", authRouter);
 app.use("/api", songRouter);
-app.use("*name", (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "/public/index.html"));
+app.use(express.static(path.join(__dirname, "..", "public")));
+
+app.get("/*name", (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "public", "index.html"));
 });
+
 export default app;

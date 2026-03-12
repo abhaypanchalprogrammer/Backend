@@ -19800,7 +19800,7 @@ const {
   tE = async ({ email: e, username: a, password: i }) => {
     try {
       return (
-        await Pc.post("/api/register", { username: a, email: e, password: i })
+        await Pc.post("/register", { username: a, email: e, password: i })
       ).data;
     } catch (r) {
       throw r.response.data;
@@ -19808,23 +19808,22 @@ const {
   },
   nE = async ({ username: e, email: a, password: i }) => {
     try {
-      return (
-        await Pc.post("/api/login", { username: e, email: a, password: i })
-      ).data;
+      return (await Pc.post("/login", { username: e, email: a, password: i }))
+        .data;
     } catch (r) {
       throw r.response.data;
     }
   },
   Mp = async () => {
     try {
-      return (await Pc.get("/api/getme")).data;
+      return (await Pc.get("/getme")).data;
     } catch (e) {
       throw e.response.data;
     }
   },
   aE = async () => {
     try {
-      return (await Pc.get("/api/logout")).data;
+      return (await Pc.get("/logout")).data;
     } catch (e) {
       throw e.response.data;
     }
@@ -28741,7 +28740,7 @@ const P_ = ({ children: e }) => {
     return i ? I.jsx(K1, {}) : a ? e : I.jsx(G7, { to: "/login", replace: !0 });
   },
   $_ = Rt.create({ baseURL: "/api", withCredentials: !0 }),
-  W_ = async ({ mood: e }) => (await $_.get("/api/getSong?mood=" + e)).data,
+  W_ = async ({ mood: e }) => (await $_.get("/getSong?mood=" + e)).data,
   L6 = C.createContext(),
   I_ = ({ children: e }) => {
     const [a, i] = C.useState(null),
@@ -28761,7 +28760,7 @@ const P_ = ({ children: e }) => {
         o(!0);
         try {
           const h = await W_({ mood: d });
-          (console.log("API DATA:", h), i(h.song), o(!1));
+          (i(h.song), o(!1));
         } catch (h) {
           throw h;
         }
