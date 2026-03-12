@@ -37,7 +37,10 @@ export const registerUser = async (req, res) => {
       { expiresIn: "3d" },
     );
 
-    res.cookie("token", token);
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+    });
     res.status(201).json({
       message: "Register successful",
     });
@@ -85,7 +88,10 @@ export const loginUser = async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: "3d" },
     );
-    res.cookie("token", token);
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+    });
 
     res.status(200).json({
       message: "Login successful",
