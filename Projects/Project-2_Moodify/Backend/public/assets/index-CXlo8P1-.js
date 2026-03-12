@@ -28730,7 +28730,7 @@ function J_({ onClick: e = () => {} }) {
         className: "button",
         onClick: h,
         disabled: !c,
-        children: "Detect Expression",
+        children: "Detect (Sad,Happy,Surprised)",
       }),
     ],
   });
