@@ -50,10 +50,6 @@ JWT_SECRET=your_secret_key
 Run the server:
 npm start
 
-📸 Screenshots
-
-<img width="1918" height="970" alt="image" src="https://github.com/user-attachments/assets/06052994-8ff3-4e54-b5cc-7ce9c7a1c4c5" />
-
 💡 Future Improvements
 🎧 Integrate Spotify API for real songs
 📊 Improve emotion accuracy using advanced ML models
