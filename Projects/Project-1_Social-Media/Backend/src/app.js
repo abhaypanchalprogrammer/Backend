@@ -34,7 +34,7 @@ app.use("/api/post", likeRouter);
 
 app.get("/",()=>{
   res.status(200).json({
-    message:"Hello";
+    message:"Hello"
   })
 }
 
