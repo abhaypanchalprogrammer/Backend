@@ -32,4 +32,10 @@ app.use("/api/posts", postRouter);
 app.use("/api/user", userRouter);
 app.use("/api/post", likeRouter);
 
+app.get("/",()=>{
+  res.status(200).json({
+    message:"Hello";
+  })
+}
+
 export default app;
