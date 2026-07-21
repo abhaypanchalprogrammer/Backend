@@ -1,0 +1,4 @@
+io => server
+socket => single user 
+on => event listen 
+emit => event ko fire krna 
