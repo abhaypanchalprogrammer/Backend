@@ -49,39 +49,6 @@ export const register = async (req, res) => {
   });
 };
 
-export const verifyEmail = async (req, res) => {
-  const { token } = req.query;
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-    const user = await userModel.findOne({ email: decoded.email });
-    if (!user) {
-      return res.status(400).json({
-        message: "Invalid token",
-        success: false,
-        err: "invalid token",
-      });
-    }
-    user.verified = true;
-    await user.save();
-    const html = `<p>hi ${user.username},</p><p>\n\nThank You for Verifying your email in Our ChatBot, we're excited to have you on board!</p>
-  <a href="http://localhost:3000/login">Click here to login</a>`;
-
-    res.send(html);
-
-    res.status(200).json({
-      message: "Email verified successfully",
-      success: true,
-    });
-  } catch (err) {
-    return res.status(400).json({
-      message: "Invalid token",
-      success: false,
-      err: "invalid token",
-    });
-  }
-};
-
 export const login = async (req, res) => {
   const { email, password } = req.body;
 
@@ -150,4 +117,37 @@ export const getme = async (req, res) => {
     success: true,
     user,
   });
+};
+
+export const verifyEmail = async (req, res) => {
+  const { token } = req.query;
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    const user = await userModel.findOne({ email: decoded.email });
+    if (!user) {
+      return res.status(400).json({
+        message: "Invalid token",
+        success: false,
+        err: "invalid token",
+      });
+    }
+    user.verified = true;
+    await user.save();
+    const html = `<p>hi ${user.username},</p><p>\n\nThank You for Verifying your email in Our ChatBot, we're excited to have you on board!</p>
+  <a href="http://localhost:3000/login">Click here to login</a>`;
+
+    res.send(html);
+
+    res.status(200).json({
+      message: "Email verified successfully",
+      success: true,
+    });
+  } catch (err) {
+    return res.status(400).json({
+      message: "Invalid token",
+      success: false,
+      err: "invalid token",
+    });
+  }
 };
