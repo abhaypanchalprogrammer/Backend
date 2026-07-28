@@ -7,10 +7,7 @@ const transport = nodemailer.createTransport({
     pass: process.env.GOOGLE_PASSWORD,
   },
 });
-console.log({
-  user: process.env.GOOGLE_USER,
-  pass: process.env.GOOGLE_PASSWORD,
-});
+
 transport
   .verify()
   .then(() => {
