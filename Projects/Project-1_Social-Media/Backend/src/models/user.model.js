@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema(
     bio: String,
     profileImage: {
       type: String,
-      default: "https://ik.imagekit.io/2xkuqfuep/image.png",
+      default: "https://ik.imagekit.io/2xkuqfuep/image",
     },
   },
   {
