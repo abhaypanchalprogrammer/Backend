@@ -7,7 +7,7 @@ const model = new ChatGoogleGenerativeAI({
 
 export const testAi = async () => {
   try {
-    const response = await model.invoke("what is the capital of india?");
+    const response = await model.invoke("hi!");
 
     console.log(response.content);
   } catch (error) {
