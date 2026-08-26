@@ -1,19 +1,40 @@
-import { ChatMistralAI } from "@langchain/mistralai";
-import { HumanMessage, AIMessage } from "@langchain/core/messages";
 import dotenv from "dotenv";
+dotenv.config();
+
+import { ChatMistralAI } from "@langchain/mistralai";
+import { createAgent } from "langchain";
+import { HumanMessage } from "@langchain/core/messages";
+import { tool } from "@langchain/core/tools";
+import * as z from "zod";
 import readline from "readline/promises";
 import chalk from "chalk";
 
-dotenv.config();
+import { sendEmail } from "./mail.service.js";
 
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
+const emailTool = tool(sendEmail, {
+  name: "emailTool",
+  description: "Send an email using the provided details.",
+  schema: z.object({
+    to: z.string().describe("Recipient email address"),
+    subject: z.string().describe("Subject of the email"),
+    html: z.string().describe("HTML content of the email"),
+    text: z.string().optional().describe("Plain text content"),
+  }),
 });
 
 const model = new ChatMistralAI({
   apiKey: process.env.MISTRAL_API_KEY,
   model: "mistral-small-latest",
+});
+
+const agent = createAgent({
+  model,
+  tools: [emailTool],
+});
+
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
 });
 
 const messages = [];
@@ -26,31 +47,27 @@ console.log(chalk.yellow("Type 'bye' to exit."));
 console.log(chalk.cyan.bold("==========================================\n"));
 
 while (true) {
-  const userInput = await rl.question(chalk.green.bold("🧑 You  ➜ "));
+  const userInput = await rl.question(chalk.green.bold("🧑 You ➜ "));
 
-  if (userInput.trim().toLowerCase() === "bye") {
-    console.log("\n" + chalk.red.bold("🤖 AI   ➜ Goodbye! 👋\n"));
+  if (userInput.toLowerCase() === "bye") {
+    console.log(chalk.blue.bold("👋 Goodbye!"));
     break;
   }
 
   messages.push(new HumanMessage(userInput));
 
   try {
-    const response = await model.invoke(messages);
+    const response = await agent.invoke({
+      messages,
+    });
 
-    console.log();
-    console.log(chalk.hex("#A020F0").bold("🤖 AI   ➜"));
-    console.log(chalk.white(response.content));
-    console.log(chalk.gray("────────────────────────────────────────────"));
-    console.log();
+    const aiMessage = response.messages.at(-1);
 
-    messages.push(new AIMessage(response.content));
-  } catch (error) {
-    console.log();
-    console.log(chalk.red("❌ Error"));
-    console.log(chalk.red(error.message));
-    console.log(chalk.gray("────────────────────────────────────────────"));
-    console.log();
+    messages.push(aiMessage);
+
+    console.log(chalk.blue.bold("🤖 AI ➜"), aiMessage.content);
+  } catch (err) {
+    console.error(chalk.red("❌ Error:"), err);
   }
 }
 
